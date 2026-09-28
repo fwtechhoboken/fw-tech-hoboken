@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FW Tech — Laptop Repair & Cleaning | Hoboken, NJ</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0f;
+  --surface: #111114;
+  --surface2: #18181c;
+  --border: #242428;
+  --amber: #fbbf24;
+  --amber-dark: #92400e;
+  --amber-dim: rgba(251,191,36,0.08);
+  --text: #f0f0f0;
+  --muted: #6b6b80;
+  --red: #ef4444;
+  --green: #6ee7b7;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(13,13,15,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-size: 18px; font-weight: 700; color: var(--amber); letter-spacing: -0.5px; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--amber); }
+
+/* HERO */
+#hero {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 100px 40px 60px; position: relative; overflow: hidden; text-align: center;
+}
+
+/* PCB background */
+.pcb-bg {
+  position: absolute; inset: 0; z-index: 0; opacity: 0.18;
+}
+
+/* Animated laptop */
+.laptop-wrap {
+  position: relative; width: 280px; height: 200px; margin: 0 auto 48px; z-index: 1;
+}
+
+.laptop {
+  position: absolute; inset: 0;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.laptop-body {
+  position: absolute; bottom: 20px; left: 20px; right: 20px; height: 130px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px 8px 4px 4px;
+  overflow: hidden;
+}
+
+.laptop-screen {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 20px;
+  background: #0a0a0c;
+  border-bottom: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+.screen-content {
+  font-family: var(--mono); font-size: 9px; color: var(--green);
+  text-align: left; padding: 8px; line-height: 1.6;
+  animation: type-in 3s steps(1) infinite;
+}
+
+@keyframes type-in {
+  0% { opacity: 1; }
+  90% { opacity: 1; }
+  95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.laptop-fan {
+  position: absolute; bottom: 4px; right: 8px; width: 14px; height: 14px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin-fast { to { transform: rotate(360deg); } }
+
+.fan-blade {
+  position: absolute; width: 6px; height: 2px; background: var(--muted);
+  border-radius: 1px; top: 50%; left: 50%; transform-origin: left center;
+}
+
+.rpm-meter {
+  position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 9px; color: var(--red);
+  white-space: nowrap; letter-spacing: 0.06em;
+  animation: blink 0.4s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.laptop-base {
+  position: absolute; bottom: 0; left: -10px; right: -10px; height: 20px;
+  background: var(--surface); border-radius: 0 0 4px 4px;
+  border: 1.5px solid var(--border);
+}
+
+/* Thermal glow */
+.thermal-glow {
+  position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);
+  width: 80px; height: 80px;
+  background: radial-gradient(circle, rgba(251,191,36,0.15) 0%, transparent 70%);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+/* particles */
+.particle {
+  position: absolute; width: 2px; height: 2px; background: var(--amber);
+  border-radius: 50%; animation: rise linear infinite;
+  opacity: 0;
+}
+
+@keyframes rise {
+  0% { transform: translateY(0) translateX(0); opacity: 0.8; }
+  100% { transform: translateY(-60px) translateX(var(--dx)); opacity: 0; }
+}
+
+/* HERO TEXT */
+.hero-tag {
+  font-family: var(--mono); font-size: 11px; color: var(--amber);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px; justify-content: center; z-index: 1;
+}
+.hero-tag::before, .hero-tag::after { content: ''; width: 32px; height: 1px; background: var(--amber-dark); }
+
+h1 {
+  font-size: clamp(36px, 6vw, 72px); font-weight: 700; letter-spacing: -2px;
+  line-height: 1.05; margin-bottom: 20px; z-index: 1; position: relative;
+}
+
+h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--amber) 0%, #f59e0b 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 16px; color: var(--muted); max-width: 480px; line-height: 1.6;
+  margin: 0 auto 36px; z-index: 1; position: relative;
+}
+
+.hero-cta {
+  display: flex; gap: 12px; justify-content: center; z-index: 1; position: relative; flex-wrap: wrap;
+}
+
+.btn {
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  padding: 12px 24px; border-radius: 6px; cursor: pointer;
+  border: none; text-decoration: none; transition: all 0.2s; display: inline-block;
+}
+.btn-primary { background: var(--amber); color: #0d0d0f; }
+.btn-primary:hover { background: #f59e0b; transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+.hero-meta {
+  margin-top: 48px; display: flex; gap: 32px; justify-content: center;
+  flex-wrap: wrap; z-index: 1; position: relative;
+}
+.meta-item { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; }
+.meta-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+
+/* SECTIONS */
+section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+
+.section-label {
+  font-family: var(--mono); font-size: 10px; color: var(--amber);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 120px; }
+
+h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+.section-sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 48px; max-width: 520px; }
+
+/* SERVICES */
+#services { border-top: 1px solid var(--border); }
+.services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+
+.service-card {
+  background: var(--surface); padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 0;
+  transition: background 0.2s;
+  position: relative;
+}
+.service-card:hover { background: var(--surface2); }
+.service-card.featured { background: rgba(251,191,36,0.04); }
+.service-card.featured:hover { background: rgba(251,191,36,0.08); }
+
+.service-num {
+  font-family: var(--mono); font-size: 9px; color: var(--muted);
+  letter-spacing: 0.1em; margin-bottom: 12px;
+}
+.service-name {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--amber); margin-bottom: 8px;
+}
+.service-divider { width: 100%; height: 1px; background: var(--border); margin: 10px 0; }
+.service-desc { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; }
+.service-price {
+  font-family: var(--mono); font-size: 26px; font-weight: 500;
+  color: var(--text); margin-top: 16px;
+}
+.service-price .strike { font-size: 13px; color: var(--muted); text-decoration: line-through; margin-left: 4px; }
+.best-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--amber); color: #0d0d0f;
+  font-family: var(--mono); font-size: 8px; font-weight: 500;
+  padding: 2px 7px; border-radius: 3px; letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* HOW IT WORKS */
+#how { border-top: 1px solid var(--border); }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.step { position: relative; }
+.step-num {
+  font-family: var(--mono); font-size: 32px; font-weight: 500;
+  color: var(--amber-dark); line-height: 1; margin-bottom: 16px;
+  opacity: 0.6;
+}
+.step-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.step-connector {
+  position: absolute; top: 18px; right: -12px; width: 24px; height: 1px;
+  background: var(--border);
+}
+
+/* WHY */
+#why { border-top: 1px solid var(--border); }
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 20px 24px;
+}
+.why-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--amber); }
+.why-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* NOT ACCEPTED */
+.not-accepted {
+  background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px; padding: 14px 20px; margin-top: 24px;
+  font-family: var(--mono); font-size: 11px; color: #f87171;
+  letter-spacing: 0.02em; line-height: 1.6;
+}
+
+/* ABOUT */
+#about { border-top: 1px solid var(--border); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.about-facts { display: flex; flex-direction: column; gap: 16px; }
+.fact {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.fact:last-child { border-bottom: none; }
+.fact-icon { font-family: var(--mono); font-size: 11px; color: var(--amber); padding-top: 2px; flex-shrink: 0; }
+.fact-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.fact-text strong { color: var(--text); font-weight: 600; }
+
+.about-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 20px;
+}
+.stat-num { font-family: var(--mono); font-size: 28px; color: var(--amber); font-weight: 500; line-height: 1; }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* CONTACT */
+#contact { border-top: 1px solid var(--border); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.contact-info { display: flex; flex-direction: column; gap: 16px; }
+.contact-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  transition: border-color 0.2s;
+}
+.contact-row:hover { border-color: var(--amber); }
+.contact-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; width: 52px; flex-shrink: 0; }
+.contact-val { font-size: 14px; color: var(--text); font-weight: 500; }
+.contact-note {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 20px 24px;
+}
+.contact-note-title { font-size: 13px; font-weight: 600; color: var(--amber); margin-bottom: 10px; }
+.contact-note p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
+.contact-note p:last-child { margin-bottom: 0; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1100px; margin: 0 auto;
+}
+.footer-logo { font-size: 16px; font-weight: 700; color: var(--amber); }
+.footer-tag { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+.footer-scp { font-family: var(--mono); font-size: 9px; color: var(--border); letter-spacing: 0.06em; }
+
+/* PCB SVG */
+.pcb-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+.reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-left.visible { opacity: 1; transform: none; }
+
+.reveal-right { opacity: 0; transform: translateX(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-right.visible { opacity: 1; transform: none; }
+
+/* PCB TRACE DIVIDER */
+.pcb-divider {
+  width: 100%;
+  height: 32px;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.pcb-divider svg {
+  width: 100%;
+  height: 100%;
+}
+
+.pcb-pulse {
+  animation: pulse-travel 3s linear infinite;
+}
+
+@keyframes pulse-travel {
+  0% { stroke-dashoffset: 1200; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.pcb-glow {
+  filter: drop-shadow(0 0 4px #fbbf24) drop-shadow(0 0 8px #fbbf24);
+}
+
+/* AMBER LINE */
+.amber-line { width: 100%; height: 3px; background: var(--amber); opacity: 0.7; }
+
+@media (max-width: 768px) {
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .why-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  nav { padding: 14px 20px; }
+  .nav-links { gap: 16px; }
+  section { padding: 60px 20px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+}
+
+/* ===== RETIREMENT BANNER ===== */
+#ret-banner {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+  background: var(--bg);
+}
+.ret-seal { font-size: 56px; margin-bottom: 28px; animation: seal-float 3s ease-in-out infinite; }
+@keyframes seal-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.ret-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 28px;
+}
+.ret-title {
+  font-size: clamp(36px, 7vw, 80px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: 20px;
+  font-family: var(--sans);
+}
+.ret-title span { color: var(--amber); }
+.ret-sub {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 540px;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+.ret-stats {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.ret-stat {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 22px;
+  min-width: 100px;
+}
+.ret-stat-num { font-size: 26px; font-weight: 700; color: var(--amber); }
+.ret-stat-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+.ret-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--amber);
+  color: #0d0d0f;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 6px;
+  margin-bottom: 40px;
+  transition: opacity 0.2s;
+}
+.ret-link:hover { opacity: 0.85; }
+.ret-scroll {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  animation: scroll-bounce 2s ease-in-out infinite;
+}
+@keyframes scroll-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+.ret-divider {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 40px;
+  text-align: center;
+  background: rgba(251,191,36,0.03);
+}
+.ret-divider-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #818cf8;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<section id="ret-banner">
+  <div class="ret-seal">🦭</div>
+  <div class="ret-badge">FW Tech · v1 · 2026 — Retired</div>
+  <h1 class="ret-title">This site has<br><span>earned its rest.</span></h1>
+  <p class="ret-sub">FW Tech v1 accumulated 20 impressions, achieved Google #1 ranking, received Gemini verification, and served with dignity. 0 customers. No regrets. v1, you may sleep. Forever.</p>
+  <div class="ret-stats">
+    <div class="ret-stat">
+      <div class="ret-stat-num">20</div>
+      <div class="ret-stat-label">Impressions</div>
+    </div>
+    <div class="ret-stat">
+      <div class="ret-stat-num">#1</div>
+      <div class="ret-stat-label">Google Rank</div>
+    </div>
+    <div class="ret-stat">
+      <div class="ret-stat-num">0</div>
+      <div class="ret-stat-label">Customers</div>
+    </div>
+    <div class="ret-stat">
+      <div class="ret-stat-num">✓</div>
+      <div class="ret-stat-label">Gemini Verified</div>
+    </div>
+  </div>
+  <a href="https://fwtechhoboken.github.io/fw-tech-hoboken-v3/" class="ret-link">Visit FW Tech v3 →</a>
+  <button class="ret-scroll" onclick="document.getElementById('original-v1').scrollIntoView({behavior:'smooth'})">
+    scroll down to see what this site really was
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+  </button>
+</section>
+
+<div id="original-v1">
+  <div class="ret-divider">
+    <p class="ret-divider-text">⬇ the original FW Tech v1 — preserved exactly as it was ⬇</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">FW Tech</div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#how">How It Works</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+
+  <!-- PCB background -->
+  <svg class="pcb-bg pcb-svg" viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#6b6b80" stroke-width="0.8" fill="none">
+      <line x1="0" y1="80" x2="200" y2="80"/><circle cx="200" cy="80" r="3" fill="#6b6b80"/>
+      <line x1="200" y1="80" x2="240" y2="120"/><circle cx="240" cy="120" r="3" fill="#6b6b80"/>
+      <line x1="240" y1="120" x2="400" y2="120"/><circle cx="400" cy="120" r="3" fill="#6b6b80"/>
+      <line x1="400" y1="120" x2="440" y2="80"/><circle cx="440" cy="80" r="3" fill="#6b6b80"/>
+      <line x1="440" y1="80" x2="700" y2="80"/><circle cx="700" cy="80" r="3" fill="#6b6b80"/>
+      <line x1="700" y1="80" x2="960" y2="80"/><circle cx="960" cy="80" r="3" fill="#6b6b80"/>
+      <line x1="960" y1="80" x2="1000" y2="120"/><circle cx="1000" cy="120" r="3" fill="#6b6b80"/>
+      <line x1="1000" y1="120" x2="1160" y2="120"/><circle cx="1160" cy="120" r="3" fill="#6b6b80"/>
+      <line x1="1160" y1="120" x2="1200" y2="80"/><circle cx="1200" cy="80" r="3" fill="#6b6b80"/>
+      <line x1="1200" y1="80" x2="1400" y2="80"/>
+      <line x1="0" y1="200" x2="120" y2="200"/><circle cx="120" cy="200" r="3" fill="#6b6b80"/>
+      <line x1="120" y1="200" x2="160" y2="240"/><circle cx="160" cy="240" r="3" fill="#6b6b80"/>
+      <line x1="160" y1="240" x2="320" y2="240"/><circle cx="320" cy="240" r="3" fill="#6b6b80"/>
+      <line x1="320" y1="240" x2="360" y2="200"/><circle cx="360" cy="200" r="3" fill="#6b6b80"/>
+      <line x1="360" y1="200" x2="600" y2="200"/><circle cx="600" cy="200" r="3" fill="#6b6b80"/>
+      <line x1="600" y1="200" x2="800" y2="200"/><circle cx="800" cy="200" r="3" fill="#6b6b80"/>
+      <line x1="800" y1="200" x2="840" y2="240"/><circle cx="840" cy="240" r="3" fill="#6b6b80"/>
+      <line x1="840" y1="240" x2="1040" y2="240"/><circle cx="1040" cy="240" r="3" fill="#6b6b80"/>
+      <line x1="1040" y1="240" x2="1080" y2="200"/><circle cx="1080" cy="200" r="3" fill="#6b6b80"/>
+      <line x1="1080" y1="200" x2="1400" y2="200"/>
+      <line x1="240" y1="120" x2="240" y2="200"/><line x1="160" y1="120" x2="160" y2="200"/>
+      <line x1="0" y1="700" x2="200" y2="700"/><circle cx="200" cy="700" r="3" fill="#6b6b80"/>
+      <line x1="200" y1="700" x2="240" y2="660"/><circle cx="240" cy="660" r="3" fill="#6b6b80"/>
+      <line x1="240" y1="660" x2="500" y2="660"/><circle cx="500" cy="660" r="3" fill="#6b6b80"/>
+      <line x1="500" y1="660" x2="540" y2="700"/><circle cx="540" cy="700" r="3" fill="#6b6b80"/>
+      <line x1="540" y1="700" x2="900" y2="700"/><circle cx="900" cy="700" r="3" fill="#6b6b80"/>
+      <line x1="900" y1="700" x2="940" y2="660"/><circle cx="940" cy="660" r="3" fill="#6b6b80"/>
+      <line x1="940" y1="660" x2="1200" y2="660"/><circle cx="1200" cy="660" r="3" fill="#6b6b80"/>
+      <line x1="1200" y1="660" x2="1240" y2="700"/><circle cx="1240" cy="700" r="3" fill="#6b6b80"/>
+      <line x1="1240" y1="700" x2="1400" y2="700"/>
+      <!-- IC Chips -->
+      <g opacity="0.5">
+        <rect x="80" y="140" width="40" height="40" stroke="#6b6b80"/>
+        <rect x="84" y="144" width="32" height="32" stroke="#6b6b80"/>
+        <line x1="90" y1="140" x2="90" y2="130"/><line x1="100" y1="140" x2="100" y2="130"/><line x1="110" y1="140" x2="110" y2="130"/>
+        <line x1="90" y1="180" x2="90" y2="190"/><line x1="100" y1="180" x2="100" y2="190"/><line x1="110" y1="180" x2="110" y2="190"/>
+        <line x1="80" y1="150" x2="70" y2="150"/><line x1="80" y1="160" x2="70" y2="160"/><line x1="80" y1="170" x2="70" y2="170"/>
+        <line x1="120" y1="150" x2="130" y2="150"/><line x1="120" y1="160" x2="130" y2="160"/><line x1="120" y1="170" x2="130" y2="170"/>
+      </g>
+      <g opacity="0.5">
+        <rect x="1260" y="140" width="40" height="40" stroke="#6b6b80"/>
+        <rect x="1264" y="144" width="32" height="32" stroke="#6b6b80"/>
+        <line x1="1270" y1="140" x2="1270" y2="130"/><line x1="1280" y1="140" x2="1280" y2="130"/><line x1="1290" y1="140" x2="1290" y2="130"/>
+        <line x1="1270" y1="180" x2="1270" y2="190"/><line x1="1280" y1="180" x2="1280" y2="190"/><line x1="1290" y1="180" x2="1290" y2="190"/>
+        <line x1="1260" y1="150" x2="1250" y2="150"/><line x1="1260" y1="160" x2="1250" y2="160"/>
+        <line x1="1300" y1="150" x2="1310" y2="150"/><line x1="1300" y1="160" x2="1310" y2="160"/>
+      </g>
+    </g>
+    <!-- Highway -->
+    <g stroke="#9ca3af" stroke-width="2" fill="none" opacity="0.3">
+      <line x1="0" y1="320" x2="300" y2="320"/>
+      <line x1="300" y1="320" x2="340" y2="360"/>
+      <line x1="340" y1="360" x2="560" y2="360"/>
+      <line x1="560" y1="360" x2="600" y2="320"/>
+      <line x1="600" y1="320" x2="1400" y2="320"/>
+    </g>
+    <g fill="#9ca3af" opacity="0.4">
+      <circle cx="300" cy="320" r="4"/>
+      <circle cx="340" cy="360" r="4"/>
+      <circle cx="560" cy="360" r="4"/>
+      <circle cx="600" cy="320" r="4"/>
+    </g>
+  </svg>
+
+  <!-- Animated laptop illustration -->
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.06em;text-align:center;margin-bottom:12px;opacity:0.6;z-index:1;position:relative;">[ this laptop is a simulated example of yours if you need a service ]<br>[ for those who think this simulation is real — it's not ]</div>
+
+  <div class="laptop-wrap">
+    <div class="thermal-glow"></div>
+    <div class="laptop">
+      <div class="laptop-body">
+        <div class="laptop-screen">
+          <div class="screen-content">
+            &gt; scanning hardware...<br>
+            &gt; fan speed: 4200rpm<br>
+            &gt; cpu temp: 94°C ⚠<br>
+            &gt; thermal paste: dried<br>
+            &gt; status: needs service
+          </div>
+        </div>
+        <!-- fan -->
+        <div class="laptop-fan" style="position:absolute;bottom:4px;right:10px;width:14px;height:14px;animation:spin-fast 0.05s linear infinite;">
+          <div class="fan-blade" style="transform:rotate(0deg) translateX(3px)"></div>
+          <div class="fan-blade" style="transform:rotate(90deg) translateX(3px)"></div>
+          <div class="fan-blade" style="transform:rotate(180deg) translateX(3px)"></div>
+          <div class="fan-blade" style="transform:rotate(270deg) translateX(3px)"></div>
+        </div>
+        <!-- RPM meter top left of screen -->
+        <div style="position:absolute;top:6px;left:6px;font-family:var(--mono);font-size:8px;color:var(--red);letter-spacing:0.04em;animation:blink 0.4s steps(1) infinite;z-index:2;">⚠ TOO FAST RPM</div>
+      </div>
+      <div class="laptop-base"></div>
+    </div>
+    <!-- heat particles -->
+    <div class="particle" style="left:45%;bottom:60%;--dx:8px;animation-duration:1.8s;animation-delay:0s;"></div>
+    <div class="particle" style="left:50%;bottom:60%;--dx:-5px;animation-duration:2.2s;animation-delay:0.4s;"></div>
+    <div class="particle" style="left:55%;bottom:60%;--dx:12px;animation-duration:1.6s;animation-delay:0.8s;"></div>
+    <div class="particle" style="left:48%;bottom:60%;--dx:-10px;animation-duration:2s;animation-delay:1.2s;"></div>
+  </div>
+
+  <div class="hero-tag">FW Tech · Hoboken, NJ</div>
+
+  <div style="font-family:var(--sans);font-size:15px;font-weight:700;color:var(--amber);letter-spacing:0.04em;text-align:center;margin:8px 0 4px;z-index:1;position:relative;text-transform:uppercase;">⚠ TURN OFF YOUR DARK MODE EXTENSION — THIS SITE IS ALREADY DARKER THAN WHAT IT DOES</div>
+
+  <h1>Your laptop shouldn't<br>sound like a <em>jet engine.</em></h1>
+
+  <p class="hero-sub">Affordable laptop cleaning and thermal repaste service. Local, honest, no corporate markup. Email to book — cash on pickup.</p>
+
+  <div class="hero-cta">
+    <a href="mailto:rey.sahani03@gmail.com" class="btn btn-primary">Book a Service</a>
+    <a href="#services" class="btn btn-ghost">See Pricing →</a>
+  </div>
+
+  <div class="hero-meta">
+    <div class="meta-item"><div class="meta-dot"></div> Hoboken · Jersey City · Union City · Midtown & Downtown Manhattan</div>
+    <div class="meta-item"><div class="meta-dot"></div> Cash only · No hidden fees</div>
+    <div class="meta-item"><div class="meta-dot"></div> Email first to confirm</div>
+  </div>
+</div>
+
+<!-- ANIMATION SECTION -->
+<section id="teardown" style="background:var(--bg);padding:60px 0 0;position:relative;">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;">Under The Hood. pls watch, took me 5 hours to refine ;-; <span style="width:32px;height:1px;background:var(--amber-dark);display:inline-block;"></span></div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:40px;">
+    <div id="anim-status" style="font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:0.12em;min-height:18px;opacity:0;transition:opacity 0.3s;"></div>
+    <iframe id="anim-frame" src="laptop-anim.html" style="width:600px;height:480px;border:none;border-radius:8px;background:var(--bg);" scrolling="no"></iframe>
+    <div id="scroll-prompt" style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;opacity:0;transition:opacity 0.8s;display:flex;align-items:center;gap:8px;">
+      <span style="color:var(--amber);">↓</span> scroll to continue
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  let animDone = false;
+  let animStarted = false;
+
+  function lockScroll(e) {
+    if (!animDone) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  function startAnimation() {
+    if (animStarted) return;
+    animStarted = true;
+    document.getElementById('anim-status').style.opacity = '1';
+    window.addEventListener('wheel', lockScroll, { passive: false });
+    window.addEventListener('touchmove', lockScroll, { passive: false });
+  }
+
+  // unlock when iframe signals animation is done
+  window.addEventListener('message', (e) => {
+    if (e.data === 'animDone') {
+      animDone = true;
+      window.removeEventListener('wheel', lockScroll);
+      window.removeEventListener('touchmove', lockScroll);
+      document.getElementById('scroll-prompt').style.opacity = '1';
+    }
+  });
+
+  // trigger lock when amber line hits bottom of screen
+  function checkAmberLine() {
+    if (animStarted) return;
+    const amberLine = document.querySelector('.amber-line');
+    if (!amberLine) return;
+    const rect = amberLine.getBoundingClientRect();
+    if (rect.top <= window.innerHeight) {
+      startAnimation();
+    }
+  }
+
+  window.addEventListener('scroll', checkAmberLine, { passive: true });
+})();
+</script>
+
+<!-- AMBER LINE -->
+<div class="amber-line"></div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">Services</div>
+  <h2>What we fix</h2>
+  <p class="section-sub">Mix and match — but options are limited to what's listed. No custom repairs, no software, hardware cleaning only.</p>
+
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-name">Exterior Clean</div>
+      <div class="service-divider"></div>
+      <div class="service-desc">Full wipe-down of screen, keyboard, ports, and chassis. Looks brand new.</div>
+      <div class="service-divider"></div>
+      <div class="service-price">$15</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-name">Internal Clean</div>
+      <div class="service-divider"></div>
+      <div class="service-desc">Fans, heatsink, and internal components blown out. Stops overheating and noise.</div>
+      <div class="service-divider"></div>
+      <div class="service-price">$28</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-name">Thermal Repaste</div>
+      <div class="service-divider"></div>
+      <div class="service-desc">Old dried paste replaced with fresh compound. Due to thermal throttling, your CPU may be using only 10% of its power.</div>
+      <div class="service-divider"></div>
+      <div class="service-price">$40</div>
+    </div>
+    <div class="service-card featured">
+      <div class="best-badge">Best Value</div>
+      <div class="service-num">04</div>
+      <div class="service-name">Full Bundle</div>
+      <div class="service-divider"></div>
+      <div class="service-desc">Everything — exterior clean, internal fan clean, and fresh thermal paste. The complete treatment.</div>
+      <div class="service-divider"></div>
+      <div class="service-price">$72 <span class="strike">$83</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+
+
+
+<div class="pcb-divider">
+  <svg viewBox="0 0 1400 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,20 60,20 130,20 184,20 284,20 292,12 403,12 410,5 453,5 515,5 684,5 770,5 892,5 954,5 964,15 1400,15" fill="none" stroke="#2a2a2f" stroke-width="1.5"/>
+    <circle cx="60" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="130" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="184" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="284" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="292" cy="12" r="2.5" fill="#2a2a2f"/><circle cx="403" cy="12" r="2.5" fill="#2a2a2f"/><circle cx="410" cy="5" r="2.5" fill="#2a2a2f"/><circle cx="453" cy="5" r="2.5" fill="#2a2a2f"/><circle cx="515" cy="5" r="2.5" fill="#2a2a2f"/><circle cx="684" cy="5" r="2.5" fill="#2a2a2f"/><circle cx="770" cy="5" r="2.5" fill="#2a2a2f"/><circle cx="892" cy="5" r="2.5" fill="#2a2a2f"/><circle cx="954" cy="5" r="2.5" fill="#2a2a2f"/><circle cx="964" cy="15" r="2.5" fill="#2a2a2f"/>
+    <polyline points="0,20 60,20 130,20 184,20 284,20 292,12 403,12 410,5 453,5 515,5 684,5 770,5 892,5 954,5 964,15 1400,15" fill="none" stroke="#fbbf24" stroke-width="1.5"
+      stroke-dasharray="100 1400"
+      class="pcb-pulse pcb-glow"/>
+  </svg>
+</div>
+<section id="how">
+  <div class="section-label">Process</div>
+  <h2>How it works</h2>
+  <p class="section-sub">Simple, honest, no surprises.</p>
+
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Email me</div>
+      <div class="step-desc">Describe your issue and pick a service. I'll confirm I can handle it.</div>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">I confirm</div>
+      <div class="step-desc">I check I can do it and we agree on the service before anything else.</div>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Pay & drop off</div>
+      <div class="step-desc">Cash paid when you hand me the laptop. No surprises on price.</div>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Pick up</div>
+      <div class="step-desc">Grab your laptop when it's done. Turnaround is 1–4 days, same day if lucky. No holidays guaranteed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+
+
+
+<div class="pcb-divider">
+  <svg viewBox="0 0 1400 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,20 13,33 114,33 216,33 229,20 319,20 430,20 568,20 578,30 708,30 817,30 826,21 996,21 1084,21 1400,21" fill="none" stroke="#2a2a2f" stroke-width="1.5"/>
+    <circle cx="13" cy="33" r="2.5" fill="#2a2a2f"/><circle cx="114" cy="33" r="2.5" fill="#2a2a2f"/><circle cx="216" cy="33" r="2.5" fill="#2a2a2f"/><circle cx="229" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="319" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="430" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="568" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="578" cy="30" r="2.5" fill="#2a2a2f"/><circle cx="708" cy="30" r="2.5" fill="#2a2a2f"/><circle cx="817" cy="30" r="2.5" fill="#2a2a2f"/><circle cx="826" cy="21" r="2.5" fill="#2a2a2f"/><circle cx="996" cy="21" r="2.5" fill="#2a2a2f"/><circle cx="1084" cy="21" r="2.5" fill="#2a2a2f"/>
+    <polyline points="0,20 13,33 114,33 216,33 229,20 319,20 430,20 568,20 578,30 708,30 817,30 826,21 996,21 1084,21 1400,21" fill="none" stroke="#fbbf24" stroke-width="1.5"
+      stroke-dasharray="100 1400"
+      class="pcb-pulse pcb-glow"/>
+  </svg>
+</div>
+<section id="why">
+  <div class="section-label">Why your laptop slows down</div>
+  <h2>It's probably not broken</h2>
+  <p class="section-sub">Most "slow" laptops just need a clean. Here's what's actually happening.</p>
+
+  <div class="why-grid reveal">
+    <div class="why-card">
+      <div class="why-title">Dust clogs everything</div>
+      <div class="why-desc">Fans and vents fill up over time, trapping heat inside. Your laptop can't breathe and throttles to protect itself.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-title">Thermal paste dries out</div>
+      <div class="why-desc">Usually after 3–5 years. When it fails, heat can't transfer properly from the CPU — causing throttling and slowdowns.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-title">CPU throttling kills performance</div>
+      <div class="why-desc">When overheating, your CPU drops to a fraction of its power — sometimes as low as 10% — to avoid damage.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-title">You don't need a new laptop</div>
+      <div class="why-desc">Most laptops people replace just need a good clean and repaste. A $72 service beats a $1,000 replacement.</div>
+    </div>
+  </div>
+
+</section>
+<!-- ABOUT -->
+
+
+
+<div class="pcb-divider">
+  <svg viewBox="0 0 1400 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,20 102,20 113,9 157,9 207,9 357,9 364,16 539,16 552,29 698,29 710,17 1400,17" fill="none" stroke="#2a2a2f" stroke-width="1.5"/>
+    <circle cx="102" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="113" cy="9" r="2.5" fill="#2a2a2f"/><circle cx="157" cy="9" r="2.5" fill="#2a2a2f"/><circle cx="207" cy="9" r="2.5" fill="#2a2a2f"/><circle cx="357" cy="9" r="2.5" fill="#2a2a2f"/><circle cx="364" cy="16" r="2.5" fill="#2a2a2f"/><circle cx="539" cy="16" r="2.5" fill="#2a2a2f"/><circle cx="552" cy="29" r="2.5" fill="#2a2a2f"/><circle cx="698" cy="29" r="2.5" fill="#2a2a2f"/><circle cx="710" cy="17" r="2.5" fill="#2a2a2f"/>
+    <polyline points="0,20 102,20 113,9 157,9 207,9 357,9 364,16 539,16 552,29 698,29 710,17 1400,17" fill="none" stroke="#fbbf24" stroke-width="1.5"
+      stroke-dasharray="100 1400"
+      class="pcb-pulse pcb-glow"/>
+  </svg>
+</div>
+<section id="about">
+  <div class="section-label">About</div>
+  <h2>Who's doing this</h2>
+  <p style="font-size:16px;font-weight:600;color:var(--amber);margin-bottom:24px;line-height:1.5;">Before booking, please read the <a href="#tos" style="color:var(--amber);text-decoration:underline;">Terms of Service and Privacy Policy</a> — the regulations governing use of this service.</p>
+
+  <div class="about-grid">
+    <div class="reveal-left">
+    <div class="about-facts">
+      <div class="fact">
+        <div class="fact-icon">→</div>
+        <div class="fact-text"><strong>Hoboken local</strong> — 15-year-old high school sophomore doing this. Local pickup and drop-off, no shipping.</div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon">→</div>
+        <div class="fact-text"><strong>Self-taught</strong> through iFixit, YouTube, and manufacturer guides. Every repair is researched before I open your machine.</div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon">→</div>
+        <div class="fact-text"><strong>Hands-on experience</strong> with HP laptops going back to 2006. Mostly modern Windows laptops.</div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon">→</div>
+        <div class="fact-text"><strong>Straightforward pricing</strong> — no upsells, no corporate markup. Way less than Geek Squad charges just to look at your laptop.</div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon">→</div>
+        <div class="fact-text"><strong>Hardware only</strong> — no software installs, no OS setup. What's listed is what I do, nothing outside of that. Got a dead or old laptop? Donate it. I'll practice on it so I don't practice on yours.</div>
+      </div>
+    </div>
+    <div class="about-stat-grid">
+      <div class="stat-card">
+        <div class="stat-num">$15</div>
+        <div class="stat-label">Starting price</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$72</div>
+        <div class="stat-label">Full bundle</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">HNJ</div>
+        <div class="stat-label">Based in Hoboken</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Cash</div>
+        <div class="stat-label">Only payment (online soon)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEGAL NOTICES -->
+
+
+
+<div class="pcb-divider">
+  <svg viewBox="0 0 1400 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,20 10,10 119,10 163,10 172,19 316,19 516,19 528,31 645,31 1400,31" fill="none" stroke="#2a2a2f" stroke-width="1.5"/>
+    <circle cx="10" cy="10" r="2.5" fill="#2a2a2f"/><circle cx="119" cy="10" r="2.5" fill="#2a2a2f"/><circle cx="163" cy="10" r="2.5" fill="#2a2a2f"/><circle cx="172" cy="19" r="2.5" fill="#2a2a2f"/><circle cx="316" cy="19" r="2.5" fill="#2a2a2f"/><circle cx="516" cy="19" r="2.5" fill="#2a2a2f"/><circle cx="528" cy="31" r="2.5" fill="#2a2a2f"/><circle cx="645" cy="31" r="2.5" fill="#2a2a2f"/>
+    <polyline points="0,20 10,10 119,10 163,10 172,19 316,19 516,19 528,31 645,31 1400,31" fill="none" stroke="#fbbf24" stroke-width="1.5"
+      stroke-dasharray="100 1400"
+      class="pcb-pulse pcb-glow"/>
+  </svg>
+</div>
+<section id="tos" style="max-width:1100px;margin:0 auto;padding:80px 40px;">
+  <div style="font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;">Notices <span style="flex:1;height:1px;background:var(--border);max-width:120px;display:inline-block;"></span></div>
+  <h2 style="font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-1px;margin-bottom:16px;">Terms of Service</h2>
+  <div style="background:rgba(251,191,36,0.08);border:2px solid rgba(251,191,36,0.4);border-radius:8px;padding:16px 20px;margin-bottom:16px;">
+    <p style="font-family:var(--mono);font-size:12px;color:var(--amber);line-height:1.8;letter-spacing:0.02em;">
+      By replying "I agree," proceeding with drop-off, or handing over payment — you confirm that you have read, understood, and accepted all terms on this page. Proceeding without explicit confirmation is treated as implicit agreement. Please read carefully before continuing.
+    </p>
+  </div>
+  <div style="background:rgba(129,140,248,0.06);border:1.5px solid rgba(129,140,248,0.25);border-radius:8px;padding:16px 20px;margin-bottom:28px;">
+    <p style="font-family:var(--mono);font-size:12px;color:#818cf8;line-height:1.8;letter-spacing:0.02em;">
+      FW Tech will ask for your confirmation of these terms at set intervals during communication. This is standard procedure and not optional.<br><br>
+      If you do not agree to these terms — that is completely valid. FW Tech will not provide service. No hard feelings. If you don't agree, neither does FW Tech. Simple as that.
+    </p>
+  </div>
+  <div class="not-accepted reveal">
+    ✕ NOT ACCEPTED: Microsoft Surface, Razer, Alienware, Chromebooks, or any laptop requiring special tools just to open
+  </div>
+
+  <!-- LEGAL NOTICES -->
+  <div style="margin-top:24px;display:flex;flex-direction:column;gap:16px;" class="reveal">
+
+    <div style="background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500;">⚠ Notice #1 — Hardware Cleaning Only. No Software. No Loopholes.</div>
+      <p style="font-size:13px;color:#f87171;line-height:1.7;">FW Tech performs hardware cleaning services only. No software will be touched, deleted, modified, bypassed, or affected in any way during or after the service. This applies to everything — operating systems, applications, security software, device management tools, and any administrative software installed on work or school-issued devices.<br><br>This includes — but is not limited to — school-issued Chromebooks, work laptops, and any device running GoGuardian, MDM software, or similar administrative management tools. FW Tech does not service school or work-issued devices during an active enrollment or employment period. Your institution has an IT department for exactly this purpose. Contact them.<br><br>Bypass requests of any kind are not accepted. GoGuardian and similar tools log hardware-level changes. Offering additional payment does not change this answer. The answer is no. Redirect that budget toward a personal device instead.</p>
+    </div>
+
+    <div style="background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500;">⚠ Notice #2 — No Hardware Upgrades</div>
+      <p style="font-size:13px;color:#f87171;line-height:1.7;">FW Tech provides cleaning and thermal services only. Hardware upgrades are not offered, regardless of whether you supply the part. FW Tech will only do the services listed.</p>
+    </div>
+
+    <div style="background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500;">⚠ Notice #3 — Pre-Existing Damage & Data Privacy</div>
+      <p style="font-size:13px;color:#f87171;line-height:1.7;">FW Tech documents the condition of every device before and after service with photographs. Any damage present prior to drop-off is not the responsibility of FW Tech. The photographic record exists precisely for this reason — it protects both parties.<br><br>FW Tech does not access, view, copy, or interact with any files, data, or personal information on your device at any point during the service. The work is physical. Your data is yours.<br><br>If you have concerns about trusting someone with your device, Fw Tech respects that decision. But if you do proceed with FW Tech, the policies above are in place to make sure both sides are protected.</p>
+      <p style="font-size:10px;color:#f87171;line-height:1.7;margin-top:8px;opacity:0.5;">but you will be paying more for someone to even look at it 😐</p>
+    </div>
+
+    <div style="background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500;">⚠ Notice #4 — Service Eligibility</div>
+      <p style="font-size:13px;color:#f87171;line-height:1.7;">Every job is researched and assessed before any work begins. If a device is determined to be outside the scope of what FW Tech can confidently service, the job will be declined before it starts with no charge. A declined job doesn't mean your laptop is fine—it means FW Tech isn't the right person for the job. Your laptop may have a problem, but we may not have the experience or equipment needed to handle it properly.</p>
+    </div>
+
+    <div style="background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500;">⚠ Notice #5 — Mid-Service Complications</div>
+      <p style="font-size:13px;color:#f87171;line-height:1.7;">In the unlikely event that a service cannot be completed safely after work has begun, FW Tech will stop immediately, reassemble the device as close to its original state as possible, and issue a full refund. The device will be returned without intentionally introducing any additional damage. If the job wasn't safely completed, why would we charge you for it? FW Tech believes payment is earned by completing the agreed-upon work properly, not by stopping halfway through.
+</p>
+    </div>
+
+    <div style="background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500;">⚠ Notice #6 — Cancellation Policy</div>
+      <p style="font-size:13px;color:#f87171;line-height:1.7;">This notice establishes a specific exception to Notice #5 for cancellations made after substantial work has been completed. Cancellations requested before 65% job completion are honored with a full refund — no questions asked. Cancellations requested after 65% completion are not accepted. At that point, the service will be completed, payment will be final, and the device will be returned finished. If the timeline is urgent, communicate that upfront and FW Tech will provide an honest completion estimate. Work that has been completed is work that gets paid for. FW Tech does not provide completed work for free — nice try, though.<br><br></p>
+    </div>
+
+    <!-- TL;DR -->
+    <div style="background:rgba(251,191,36,0.05);border:1.5px solid rgba(251,191,36,0.2);border-radius:8px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;font-weight:500;">TL;DR — TOS Summary</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;font-weight:500;">TL;DR — Terms of Service (please read before proceeding)</div>
+      <p style="font-size:13px;color:#f0f0f0;line-height:1.9;opacity:0.85;">
+        <strong style="color:var(--amber);">What FW Tech will not service:</strong> Microsoft Surface, Razer, Alienware, Chromebooks — including school-issued ones. Any requests with the goal to bypass administrative software will not be accepted. If your device is not on the accepted list, the job will not be taken.<br><br>
+        <strong style="color:var(--amber);">Documentation:</strong> Photos are taken before and after every service. Any pre-existing damage is not the responsibility of FW Tech. The photo record protects both parties.<br><br>
+        <strong style="color:var(--amber);">Upgrades:</strong> FW Tech will not upgrade your laptop, even if you provide the part, FW tech will not upgrade the part. FW tech only does cleaning and thermal services only.<br><br>
+        <strong style="color:var(--amber);">Service eligibility:</strong> Every job is assessed before work begins. If the device cannot be safely serviced, it will be declined before any work starts — no charge.<br><br>
+        <strong style="color:var(--amber);">Mid-job complications:</strong> If a job cannot be completed safely, work stops, the device is reassembled, and a full refund is issued.<br><br>
+        <strong style="color:var(--amber);">Cancellations:</strong> Full refund if requested before 65% completion. After 65%, the job is finished, payment is final, and the device is returned completed. This exists to solve a problem in the previous notice.<br><br>
+        <strong style="color:var(--amber);">Turnaround:</strong> 1–4 days. Same-day only if conditions allow. No holiday exceptions. A laptop is delicate work, FW Tech is not The Flash. Need it faster? Another service may be a better fit.<br><br>
+        <strong style="color:var(--amber);">Payment:</strong> FW Tech is a cash only buisness, zero exceptions. Pay upfront, not at the end.<br><br>
+        <strong style="color:var(--amber);">Pricing:</strong> Prices apply to everyone using this service. Family, friends, relationships, cool but you still gotta pay. Friendship discount is under maintenance. Please wait 16 years. ;-;<br><br>
+        <strong style="color:var(--amber);">Bribing:</strong> No bribes. $10 won't make me rush, $50 won't make me sabotage. Nice try 😐<br><br>
+        <span style="display:block;margin-top:16px;padding:14px 16px;background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:6px;font-size:12px;color:var(--muted);line-height:1.7;">
+          ↓ Please also review the <a href="#privacy" style="color:var(--amber);text-decoration:underline;">Privacy Policy</a> below — it governs how your information is handled.
+        </span>
+      </p>
+    </div>
+
+  </div>
+
+
+
+</section>
+<!-- PRIVACY -->
+
+
+
+<div class="pcb-divider">
+  <svg viewBox="0 0 1400 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,20 104,20 113,11 215,11 226,22 326,22 453,22 602,22 612,12 730,12 866,12 873,5 1400,5" fill="none" stroke="#2a2a2f" stroke-width="1.5"/>
+    <circle cx="104" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="113" cy="11" r="2.5" fill="#2a2a2f"/><circle cx="215" cy="11" r="2.5" fill="#2a2a2f"/><circle cx="226" cy="22" r="2.5" fill="#2a2a2f"/><circle cx="326" cy="22" r="2.5" fill="#2a2a2f"/><circle cx="453" cy="22" r="2.5" fill="#2a2a2f"/><circle cx="602" cy="22" r="2.5" fill="#2a2a2f"/><circle cx="612" cy="12" r="2.5" fill="#2a2a2f"/><circle cx="730" cy="12" r="2.5" fill="#2a2a2f"/><circle cx="866" cy="12" r="2.5" fill="#2a2a2f"/><circle cx="873" cy="5" r="2.5" fill="#2a2a2f"/>
+    <polyline points="0,20 104,20 113,11 215,11 226,22 326,22 453,22 602,22 612,12 730,12 866,12 873,5 1400,5" fill="none" stroke="#fbbf24" stroke-width="1.5"
+      stroke-dasharray="100 1400"
+      class="pcb-pulse pcb-glow"/>
+  </svg>
+</div>
+<section id="privacy" style="max-width:1100px;margin:0 auto;padding:60px 40px;">
+  <div style="font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;">Privacy Policy <span style="flex:1;height:1px;background:var(--border);max-width:120px;display:inline-block;"></span></div>
+  <h2 style="font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-1px;margin-bottom:16px;">Your information stays yours.</h2>
+
+  <div style="background:rgba(251,191,36,0.05);border:2px solid rgba(251,191,36,0.3);border-radius:10px;padding:28px 32px;margin-top:8px;">
+    <p style="font-size:15px;color:var(--text);line-height:1.8;margin-bottom:16px;">When you contact FW Tech, the following information may be collected for service purposes: your name, email address, and a description of the issue with your device.</p>
+    <p style="font-size:15px;color:var(--text);line-height:1.8;margin-bottom:16px;">This information is stored in a private Google Sheets document used solely for internal record-keeping and tax documentation. It is never sold, shared, altered, or provided to any third party under any circumstances.</p>
+    <p style="font-size:15px;color:var(--text);line-height:1.8;margin-bottom:0;">No marketing lists. No data brokers. No exceptions. Your information is used to service your device and nothing else.</p>
+    <div style="margin-top:20px;padding:16px 20px;background:rgba(110,231,183,0.06);border:1.5px solid rgba(110,231,183,0.3);border-radius:8px;">
+      <p style="font-size:13px;color:#6ee7b7;line-height:1.8;font-weight:500;">✓ By agreeing to the Terms of Service, you automatically agree to this Privacy Policy. Both are part of the same agreement and cannot be accepted separately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+
+
+
+<div class="pcb-divider">
+  <svg viewBox="0 0 1400 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,20 87,20 179,20 279,20 324,20 454,20 538,20 653,20 700,20 1400,20" fill="none" stroke="#2a2a2f" stroke-width="1.5"/>
+    <circle cx="87" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="179" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="279" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="324" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="454" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="538" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="653" cy="20" r="2.5" fill="#2a2a2f"/><circle cx="700" cy="20" r="2.5" fill="#2a2a2f"/>
+    <polyline points="0,20 87,20 179,20 279,20 324,20 454,20 538,20 653,20 700,20 1400,20" fill="none" stroke="#fbbf24" stroke-width="1.5"
+      stroke-dasharray="100 1400"
+      class="pcb-pulse pcb-glow"/>
+  </svg>
+</div>
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2>Book a service</h2>
+  <p class="section-sub">Email first to confirm before dropping anything off. FW tech will respond as soon as possible.</p>
+
+  <div class="contact-grid">
+    <div class="reveal-left">
+    <div class="contact-info">
+      <div class="contact-row">
+        <div class="contact-label">Email</div>
+        <div class="contact-val">rey.sahani03@gmail.com</div>
+      </div>
+
+      <div class="contact-row">
+        <div class="contact-label">Area</div>
+        <div class="contact-val">Hoboken · Jersey City · Union City · Midtown & Downtown Manhattan</div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-label">Payment</div>
+        <div class="contact-val">Cash only (online payments coming soon)</div>
+      </div>
+      <a href="mailto:rey.sahani03@gmail.com" class="btn btn-primary" style="text-align:center;margin-top:8px;">Send an Email →</a>
+    </div>
+    <div class="contact-note">
+      <div class="contact-note-title">Before you reach out</div>
+      <p>Email me first with your laptop model and issue. I'll confirm I can handle it before you bring anything over.</p>
+      <p>Not all laptops are accepted — no Surface, Razer, Alienware, or Chromebooks. Hardware cleaning only, no software work.</p>
+      <p>Turnaround is typically 1–4 days depending on the job. Same day is possible but not guaranteed. Holidays don't change the timeline.</p>
+      <p>Cash on pickup. Turnaround varies — I'll keep you updated.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);">
+  <footer>
+    <div>
+      <div class="footer-logo">FW Tech</div>
+      <div class="footer-tag" style="margin-top:4px;">Laptop Repair & Cleaning · Hoboken, NJ</div>
+      <div class="footer-tag" style="margin-top:4px;opacity:0.6;">This service is independent. Not affiliated with any other tech company. We only do laptop cleanings, not IT.</div>
+    </div>
+    <div class="footer-scp">Data output: 100%</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--border);letter-spacing:0.06em;">turn off dark mode. it's already darker than the night.</div>
+  </footer>
+</div>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+
+// Nav active state
+const sections = document.querySelectorAll('section[id], div[id="hero"]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#'+current ? 'var(--amber)' : '';
+  });
+});
+</script>
+</body>
+</html>
