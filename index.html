@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://fwtechhoboken.github.io/fw-tech-hoboken-v3/">
 <title>FW Tech — Laptop Repair & Cleaning | Hoboken, NJ</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -494,6 +496,30 @@ footer {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
+/* ===== Museum placards ===== */
+.plaque { position: relative; max-width: 560px; margin: 0 auto; text-align: left; background: #efebe1; color: #1a1a1d; padding: 22px 24px 20px; border-left: 6px solid var(--amber);
+  box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 18px 40px -18px rgba(0,0,0,.9); }
+.plaque::before { content: ''; position: absolute; top: 10px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: #b8b2a2; box-shadow: 0 0 0 1px #8f897b inset; }
+.plaque-no { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #92400e; }
+.plaque-title { font-family: var(--sans); font-size: 22px; font-weight: 700; letter-spacing: -.4px; margin-top: 6px; line-height: 1.15; }
+.plaque-meta { font-family: var(--mono); font-size: 11px; color: #5c5a55; margin-top: 6px; line-height: 1.6; }
+.plaque-text { font-family: var(--sans); font-size: 15px; line-height: 1.6; color: #2c2b29; margin-top: 12px; border-top: 1px solid #cfc9bb; padding-top: 12px; }
+.plaque-epitaph { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 15px; line-height: 1.55; color: #4a463e; margin-top: 12px; padding-left: 12px; border-left: 2px solid #cfc9bb; }
+.plaque-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 16px; }
+.plaque-exit { display: inline-flex; align-items: center; gap: 8px; background: #1a1a1d; color: var(--amber); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; padding: 11px 18px; border-radius: 6px; transition: background .2s, color .2s; }
+.plaque-exit:hover { background: var(--amber); color: #0d0d0f; }
+.plaque-exit:focus-visible, .plaque-tour:focus-visible { outline: 2px solid #92400e; outline-offset: 3px; }
+.plaque-tour { background: none; border: 0; padding: 0; cursor: pointer; font-family: var(--mono); font-size: 12px; color: #5c5a55; text-decoration: underline; text-underline-offset: 3px; }
+.plaque-tour:hover { color: #1a1a1d; }
+.plaque-wrap { padding: 0 24px; }
+.ret-stat-note { font-family: var(--mono); font-size: 10px; color: var(--muted); opacity: .8; margin-top: 6px; max-width: 150px; margin-left: auto; margin-right: auto; line-height: 1.4; }
+nav { transition: transform .3s ease; }
+nav.in-memorial { transform: translateY(-110%); }
+#ret-banner .plaque { margin-bottom: 36px; }
+.exhibit-b { padding: 56px 24px 64px; background: var(--bg); }
+.exhibit-end { padding: 72px 24px 88px; background: var(--bg); border-top: 1px solid var(--border); }
+@media (max-width: 520px) { .plaque { padding: 18px 18px 18px; } .plaque-title { font-size: 19px; } .plaque-text { font-size: 14px; } }
 </style>
 </head>
 <body>
@@ -511,6 +537,7 @@ footer {
     <div class="ret-stat">
       <div class="ret-stat-num">#1</div>
       <div class="ret-stat-label">Google Rank</div>
+      <div class="ret-stat-note">searching "FW Tech Hoboken"</div>
     </div>
     <div class="ret-stat">
       <div class="ret-stat-num">0</div>
@@ -519,9 +546,17 @@ footer {
     <div class="ret-stat">
       <div class="ret-stat-num">✓</div>
       <div class="ret-stat-label">Gemini Verified</div>
+      <div class="ret-stat-note">cited by Gemini as a credible source</div>
     </div>
   </div>
-  <a href="https://fwtechhoboken.github.io/fw-tech-hoboken-v3/" class="ret-link">Visit FW Tech v3 →</a>
+  <div class="plaque" role="note" aria-label="Exhibit A placard">
+    <div class="plaque-no">Exhibit A</div>
+    <div class="plaque-title">The Retirement of a True Website</div>
+    <div class="plaque-meta">FW Tech v1, July to late September 2026<br>HTML, CSS, stubbornness, and a seal :D</div>
+    <p class="plaque-text">A tombstone for the first website. The info is the same, and v3 has built upon it with better graphics, but v1 is still acceptable. Every stat above is real, even the 0. The builder laughed with it, so you can too.</p>
+    <p class="plaque-epitaph">May v1, which lasted 3 months, sleep off its duties and rest till the end.</p>
+    <div class="plaque-actions"><a class="plaque-exit" href="https://fwtechhoboken.github.io/fw-tech-hoboken-v3/">Exit to the current site →</a></div>
+  </div>
   <button class="ret-scroll" onclick="document.getElementById('original-v1').scrollIntoView({behavior:'smooth'})">
     scroll down to see what this site really was
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -529,7 +564,19 @@ footer {
 </section>
 
 <div id="original-v1">
-  <div class="ret-divider">
+  <div class="exhibit-b">
+    <div class="plaque" role="note" aria-label="Exhibit B placard">
+      <div class="plaque-no">Exhibit B</div>
+      <div class="plaque-title">The First Build</div>
+      <div class="plaque-meta">On display below, as visitors saw it</div>
+      <p class="plaque-text">Walk the original hall: the hero, the prices, and the laptop teardown animation that took 5 hours to refine. Nothing has been touched up.</p>
+      <div class="plaque-actions">
+        <a class="plaque-exit" href="https://fwtechhoboken.github.io/fw-tech-hoboken-v3/">Exit to the current site →</a>
+        <button type="button" class="plaque-tour" onclick="document.getElementById('v1-start').scrollIntoView({behavior:'smooth'})">Or tour the exhibit ↓</button>
+      </div>
+    </div>
+  </div>
+  <div class="ret-divider" id="v1-start">
     <p class="ret-divider-text">⬇ the original FW Tech v1 — preserved exactly as it was ⬇</p>
   </div>
 </div>
@@ -1099,7 +1146,23 @@ footer {
   </footer>
 </div>
 
+<section class="exhibit-end" aria-label="End of exhibit">
+  <div class="plaque" role="note">
+    <div class="plaque-no">End of exhibit</div>
+    <div class="plaque-title">Thanks for visiting.</div>
+    <p class="plaque-text">This version has retired. FW Tech is still open for laptop cleaning and thermal repaste in Hoboken, now at v3. Book through the current site.</p>
+    <div class="plaque-actions"><a class="plaque-exit" href="https://fwtechhoboken.github.io/fw-tech-hoboken-v3/">Exit to the current site →</a></div>
+  </div>
+</section>
+
 <script>
+// The old site's nav stays tucked away until you reach the original v1
+(() => {
+  const nav = document.querySelector('nav'), start = document.getElementById('v1-start');
+  if (!nav || !start) return;
+  const sync = () => nav.classList.toggle('in-memorial', start.getBoundingClientRect().top > 80);
+  sync(); addEventListener('scroll', sync, { passive: true }); addEventListener('resize', sync);
+})();
 // Scroll reveal
 const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
 const observer = new IntersectionObserver(entries => {
